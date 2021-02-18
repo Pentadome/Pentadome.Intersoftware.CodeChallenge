@@ -30,7 +30,7 @@ namespace Pentadome.Intersoftware.CodeChallenge.Data.Repositories
 
             var salesByProduct = sales.GroupBy(x => x.Product);
 
-            var productSaleRecords = new List<>();
+            var productSaleRecords = new List<ProductMonthlySaleRecord>();
 
             // TODO refractor
             foreach (var productSales in salesByProduct)
