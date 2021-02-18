@@ -7,8 +7,6 @@ namespace Pentadome.Intersoftware.CodeChallenge.Data.Models
 {
     public class MonthlySaleRecord
     {
-        public string Product { get; set; }
-
         /// <summary>
         /// 1 to 12
         /// </summary>
@@ -18,6 +16,6 @@ namespace Pentadome.Intersoftware.CodeChallenge.Data.Models
 
         public int Quantity { get; set; }
 
-        public long TurnOver { get; set; }
+        public decimal TurnOver { get; set; }
     }
 }

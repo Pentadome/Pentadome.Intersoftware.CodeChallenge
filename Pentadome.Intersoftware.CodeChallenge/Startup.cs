@@ -29,6 +29,16 @@ namespace Pentadome.Intersoftware.CodeChallenge
         {
             services.AddControllers();
 
+            services.AddCors(setup =>
+            {
+                setup.AddDefaultPolicy(x =>
+                {
+                    x.AllowAnyOrigin();
+                    x.AllowAnyMethod();
+                    x.AllowAnyHeader();
+                });
+            });
+
             services.AddSingleton<CsvDataRepository>();
         }
 
@@ -43,6 +53,8 @@ namespace Pentadome.Intersoftware.CodeChallenge
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
