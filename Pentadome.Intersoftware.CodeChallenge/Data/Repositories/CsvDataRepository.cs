@@ -24,34 +24,44 @@ namespace Pentadome.Intersoftware.CodeChallenge.Data.Repositories
             return csv.GetRecords<Sale>().ToList();
         }
 
-        public ICollection<MonthlySaleRecord> GetMonthlySaleRecords()
+        public ICollection<ProductMonthlySaleRecord> GetMonthlySaleRecords()
         {
             var sales = GetSales();
 
-            var salesByProductByMonthPerYear = sales.GroupBy(x => (year: x.Date.Year, month: x.Date.Month, product: x.Product));
+            var salesByProduct = sales.GroupBy(x => x.Product);
 
-            var monthlySaleRecords = new List<MonthlySaleRecord>();
-            foreach (var salesInMonth in salesByProductByMonthPerYear)
+            var productSaleRecords = new List<>();
+
+            // TODO refractor
+            foreach (var productSales in salesByProduct)
             {
-                var quantity = 0;
-                decimal turnOver = 0;
-
-                foreach (var sale in salesInMonth)
+                var productSaleRecord = new ProductMonthlySaleRecord
                 {
-                    quantity += sale.Quantity;
-                    turnOver += sale.Price * sale.Quantity;
+                    Product = productSales.Key
+                };
+                productSaleRecords.Add(productSaleRecord);
+
+                var salesOfProductByMonth = productSales.ToLookup(x => x.Date.Month);
+
+                for (byte i = 1; i != 12; i++)
+                {
+                    var salesInCurrentMonth = salesOfProductByMonth[i];
+                    var saleRecord = new MonthlySaleRecord
+                    {
+                        Month = i,
+                        Year = 2018
+                    };
+                    productSaleRecord.SaleRecords.Add(saleRecord);
+
+                    foreach (var sale in salesInCurrentMonth)
+                    {
+                        saleRecord.Quantity += sale.Quantity;
+                        saleRecord.TurnOver += sale.Quantity * sale.Price;
+                    }
                 }
-
-                monthlySaleRecords.Add(new MonthlySaleRecord
-                {
-                    Month = (byte)salesInMonth.Key.month,
-                    Year = salesInMonth.Key.year,
-                    Product = salesInMonth.Key.product,
-                    Quantity = quantity,
-                    TurnOver = (long)turnOver
-                });
             }
-            return monthlySaleRecords;
+
+            return productSaleRecords;
         }
     }
 }

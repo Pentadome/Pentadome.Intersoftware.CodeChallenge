@@ -30,7 +30,7 @@ namespace Pentadome.Intersoftware.CodeChallenge.Controllers
         }
 
         [Route("GetSalesByMonth")]
-        public ICollection<MonthlySaleRecord> GetSalesByMonth()
+        public ICollection<ProductMonthlySaleRecord> GetSalesByMonth()
         {
             return _dataRepository.GetMonthlySaleRecords();
         }
