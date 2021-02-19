@@ -11,5 +11,5 @@ Run `npm i` on "/pentdadome.intersoftware.codechallenge.vuejs".
 
 Run `npm run serve` in the same directory.
 
-Run `dotnet run` on "Pentadome.Intersoftware.CodeChallenge".
+Run `dotnet run` on "/Pentadome.Intersoftware.CodeChallenge".
 
