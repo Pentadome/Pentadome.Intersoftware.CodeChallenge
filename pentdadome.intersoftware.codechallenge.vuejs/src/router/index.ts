@@ -1,3 +1,4 @@
+import { store } from '@/store'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 
@@ -16,9 +17,21 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: () => import('../views/Login.vue')
+  },
+  {
     path: '/graph',
     name: 'Grap',
-    component: () => import('../views/Graph.vue')
+    component: () => import('../views/Graph.vue'),
+    beforeEnter: (to, from, next) => {
+      if (!store.state.isAdmin) {
+        next('/login')
+        return
+      }
+      next()
+    }
   }
 ]
 

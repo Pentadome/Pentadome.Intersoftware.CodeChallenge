@@ -1,9 +1,13 @@
 import { createStore } from 'vuex'
 
-export default createStore({
+export const store = createStore({
   state: {
+    isAdmin: false
   },
   mutations: {
+    setAdmin (state, isAdmin) {
+      state.isAdmin = isAdmin
+    }
   },
   actions: {
   },
