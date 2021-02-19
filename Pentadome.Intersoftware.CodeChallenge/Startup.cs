@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Pentadome.Intersoftware.CodeChallenge.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +27,19 @@ namespace Pentadome.Intersoftware.CodeChallenge
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+
+            services.AddCors(setup =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Pentadome.Intersoftware.CodeChallenge", Version = "v1" });
+                setup.AddDefaultPolicy(x =>
+                {
+                    x.AllowAnyOrigin();
+                    x.AllowAnyMethod();
+                    x.AllowAnyHeader();
+                });
             });
+
+            services.AddSingleton<CsvDataRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,13 +48,13 @@ namespace Pentadome.Intersoftware.CodeChallenge
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Pentadome.Intersoftware.CodeChallenge v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 

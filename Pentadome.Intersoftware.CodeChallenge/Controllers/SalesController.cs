@@ -15,11 +15,24 @@ namespace Pentadome.Intersoftware.CodeChallenge.Controllers
     [ApiController]
     public class SalesController : ControllerBase
     {
+        private readonly CsvDataRepository _dataRepository;
+
+        public SalesController(CsvDataRepository dataRepository)
+        {
+            _dataRepository = dataRepository ?? throw new ArgumentNullException(nameof(dataRepository));
+        }
+
         // [Authorize(Roles = ApplicationRole.Admin)]
         [Route("GetAll")]
         public ICollection<Sale> GetAllSales()
         {
-            return CsvDataRepository.GetSales();
+            return _dataRepository.GetSales();
+        }
+
+        [Route("GetSalesByMonth")]
+        public ICollection<ProductMonthlySaleRecord> GetSalesByMonth()
+        {
+            return _dataRepository.GetMonthlySaleRecords();
         }
     }
 }
